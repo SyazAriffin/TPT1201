@@ -1,8 +1,83 @@
-\documentclass[•]{article}
-\title{•}
-\author{•}
+\documentclass[a4paper,11pt]{article}
+\title{Robust Real-Time Face Recognition}
+\author{B.Lagerwall & S.Viriri}
 \begin{document}
-\abstract{}
+\maketitle
+\tableofcontents 
+\newpage
+\abstract{This research paper describe and discuss the mathematical ways require to form face detection and face recognition at the exact moment needed. Some feature and technique is used for face detection and face recognition similar Haar basic function and eigenfaces technique.This technique can be combined in a manner that run at the exact moment needed or in real-time.}
+\section{INTRODUCTION}
+\hspace{1cm}The moment we want to recognise or identified a person  is simply by looking at their faces or trajectory image. It is just as simple as remembering faces than name that are usually complicated or long. There are two stages in identifying any potential faces within image. The first step is face detection which involve recognising any faces image. The second stage is face recognition which involve taking any past or existing data and compared with faces images.\\
+ 
+\hspace{1cm}The phenomenal face recognition and face detection is famous in real life as many company use this feature in their technology development. For example , Samsung Electronic Co., Ltd. introduce a smartphone and smart-camera that both use face detection in camera feature. Face recognition and detection is widely use in security system. This high level security system use face recognition to identify the person. CCTV camera use face detection and recognition in real time so that any event of theft authorities will get on track of the suspects.
+
+\section{RELATED WORK}
+\hspace{1cm}There has been various kind of experiment by different group of people in face detection and face recognition.  Voila and Jones use a technique that features using the AdaBoost Technique. Rahman et a\.l suggest a number of algorithm that can work with Voila and Jones. Most importantly that they introduced the concept of key frame. Every key frame is detected on every $x$ frame.\\
+
+\hspace{1cm}Rowley et a\.l introduced another well known technique call neural network-based technique.The system process can be compare to Viola and Jones but the execution time is longer than Viola and Jones. One of the earliest technique in face detection and recognition was performed by Turk and Pentland. Information theory approach call as Principal Component Analysis(PCA) is used to encode the facial image. All the face data are manipulate to form a set of eigenvectors(face recognition literature).\\
+
+\hspace{1cm}Moon and Phillip try to revolutionary the eigenvector by introducing ideas and optimisation. However the face recognition frontal , upright facial image doesn't increase as they progress.
 
 
+
+
+\section{DESIGN AND METHODOLOGY}
+
+\subsection{Face Detection}
+\hspace{1cm}The face detection algorithm from Viola and Jones is chose based on fast execution.
+\subsubsection{Classifier}
+\hspace{1cm}The first step of building a face detection system is to train it classifier. A some large data need to be learn in order to get a 100\% rate of sucessful detection.The usuall data needed is example ( 5000 facial images and 10000 non-facial images). However because of already existing classifier : the haarcascade\_frontalface\_default by OpenCV is used to minimize the process training.
+\subsubsection{Preprocessing}
+\hspace{1cm} The image is turn to grayscale as one of only preprocessing.The image is being algorithm in every window define by Viola and Jones to classified it faces or non\-faces.
+\subsubsection{Integral Image}
+\hspace{1cm} The integral image is define as sum of pixel above and left of that particular pixel.\\\\
+$ii(x,y) = \sum_{a\geq x} \sum_{b\geq y} i(a,b) $ \\\\
+
+\hspace{1cm} $(x,y)$is value of integral while $(a,b)$is the value of original image.The advantage of  integral image that it can be calculates as 4 array reference presenting $(x\1,y\1)$ and $(x\2,y\2)$.\\\\
+$rect = ii(x\1,y\1)-ii(x\1,y\2)-ii(x\2,y\1)-ii(x\2,y\2)$\\
+\subsubsection{Merging Detection}
+\hspace{1cm} Viola and Jones merged all overlapping image that be detected.Instead of merging algorithm the algorithm is constructed in a way :-\\
+$euclideanDistance (c\i,c\j) \geq t x width(i) $\\\\
+$euclideanDistance (c\i,c\j) \geq t x width(j) $\\\\
+
+\subsection{Face Recognition}
+\hspace{1cm}  Face recognition  used the eigenfaces technique. this algorithm is the important keys for quick classification  of the test image.
+\subsubsection{Training}
+\hspace{1cm} Recognition of image is well known with  base set of known image. On each set of image. illumination normalization is process used:\\
+$image\i = \frac{image\i}{max}$ \\
+where $image\i$ is the $i$th pixel of the image and $max$ is the largest value of any of the pixel image.
+\begin{itemize}
+    \item Mapping the pixel intensities of image onto a face vector. All of the face vector from the training set are then placed into the matrix.
+    \item Performing various matrix operation, including eigenvalue decomposition to eventually obtain eigenfaces or ghost faces.
+    \item Calculating a weight matrix , where each weight represent the amount to which an eigenfaces count toward making up images.
+\end{itemize}
+
+\subsubsection{Classification}
+\hspace{1cm}The face image is classify as one of the subject in database.The system also can reject the image that doesn't exist in the system database. Turk and Pentland performed the testing and created a matrix of weight specifying the contribution of each images. The weight than been compared to the weight of the training image or database images. A distance classifier is use to recognised each image and classify the person on set.
+
+\subsection{Novel Selection Algorithm}
+\hspace{1cm} In the old ways, a test image is classified as the image of database against which is has the shortest distance. Distance calculate between $n$ images in the database and the test image are sorted and rank from smallest to biggest. Database of multiple images per subject will be pre selected possibilities occur.
+\section{RESULT AND DISCUSSION}
+\hspace{1cm} To assess the complete system, face detection and face recognition must meet the requirement needed and be analysed for high quality result. For testing purpose the subsystem were built in different type of modules that can be tested individually.
+
+\subsection{Detection Results}
+\hspace{1cm} MIT + CMU database used by viola and jones was obtained for testing purposes. CMU database is more accurate than CMU due to the resolution issue and poor quality. Viola and Jones receive a detection accuracy by 76.1\% with only 10 false detection. These parameter give a 75.5\% accuracy with 61 false detection. The reason of this is because Viola and Jones built 3 classifier/detector using different initial weights and differing negative samples. The size of the faces int he image does not appear to affect the detection rate of success. This show that the algorithm is usable and functioning.
+\subsubsection{Detection Computation Time}
+\hspace{1cm} Test that were perform to justify the detection algorithm real time capability.Note that the pixel increment and minimum criteria is being fixed at 2 and scaling factor $s=1.25$.\\\\
+\begin{tabular}{|l|c|r|}
+\hline
+Image size & $s=1.1$ & $s=1.25$\\
+\hline
+$640x480$ & 1.82s & 0.89s\\
+\hline
+$320x240$ & 0.41s & 0.2s\\
+\hline 
+\end{tabular}
+
+\subsection{Recognition Results}
+\hspace{1cm} The Feret databse of facial images was obtained in order to to test recognition rates. Only 1195 upright, frontal face images pairs are considered.This testing involved taking random $n$ subjects from the database and train one by one than testing the one by one.
+
+
+\section{CONCLUSION}
+\hspace{1cm}This paper can be conclude that at various algorithm for face detection and face recognition it can be combined for experience a real time result with high quality output.Furthermore the it has been shown that the algorithm is robust since detection and recognition rates are not affected by the size of images. Thus this research should be expand for further method to revolutionary the face recognition system in the future.
 \end{document}
